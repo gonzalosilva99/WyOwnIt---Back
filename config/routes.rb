@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       devise_scope :user do
         post '/users/sign_in', to: 'api/v1/users/sessions#create'
         delete '/users/sign_out', to: 'api/v1/users/sessions#destroy'
+        post '/users/sign_up', to: 'api/v1/users/registrations#create'
         post '/users/password', to: 'api/v1/users/passwords#create'
         put '/users/password', to: 'api/v1/users/passwords#update'
       end
