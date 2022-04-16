@@ -16,4 +16,10 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers' 
+    end
+  end
 end
