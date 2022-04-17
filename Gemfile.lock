@@ -173,6 +173,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-protection (2.2.0)
       rack
     rack-test (1.1.0)
@@ -284,6 +286,7 @@ DEPENDENCIES
   pry-nav
   pry-remote
   puma (~> 5.0)
+  rack-cors
   rails (~> 7.0.2, >= 7.0.2.2)
   selenium-webdriver
   sinatra
