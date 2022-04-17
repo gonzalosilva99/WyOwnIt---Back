@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         post '/users/sign_up', to: 'api/v1/users/registrations#create'
         post '/users/password', to: 'api/v1/users/passwords#create'
         put '/users/password', to: 'api/v1/users/passwords#update'
+        get '/users/my_user', to: 'api/v1/users/users#my_user'
       end
     end
   end

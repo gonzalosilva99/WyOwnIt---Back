@@ -2,17 +2,19 @@ class Ability
     include CanCan::Ability
   
     def initialize(user)
-      if user.main? #  abilities of main store
+      can [:my_user], User
+      if user.admin? #  abilities of main store
         # can [:index, :show, :stats_by_month, :update], Shipment
         # can [:create, :index, :show, :update], ShipmentProduct
         # can [:create, :index, :show, :update, :swap_products_order], Product 
         # can [:create, :index, :show, :products, :update,:swap_categories_order], Category 
-      elsif user.subsidiary?
+      elsif user.customer?
         # can [:create, :index, :show, :stats_by_month, ], Shipment
         # can [:index, :show], ShipmentProduct
         # can [:index, :show, :swap_products_order], Product
         # can [:create, :index, :show, :products, :swap_categories_order], Category 
       end
+
   
       # Define abilities for the passed in user here. For example:
       #
