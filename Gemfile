@@ -37,6 +37,17 @@ gem 'sinatra'
 
 gem 'uri'
 
+gem "image_processing", ">= 1.2"
+
+gem "activestorage"
+
+gem 'activestorage-cloudinary-service' #Link Cloudinary and Active Storage
+
+gem 'active_storage_validations'
+
+gem 'shrine', '~> 3.3'
+gem "shrine-cloudinary", "~> 1.1"
+
 gem 'net-http'
 
 gem 'rack-cors'

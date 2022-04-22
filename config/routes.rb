@@ -29,8 +29,9 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
-      get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers' 
-      get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code' 
+      get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers'
+      resources :products, only: [:index,:create]
+      get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code'
     end
   end
 end

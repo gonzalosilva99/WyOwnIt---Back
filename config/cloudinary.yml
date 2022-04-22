@@ -1,0 +1,13 @@
+development:
+  cloud_name: ENV['CLOUD_NAME']
+  api_key:    ENV['CLOUD_API_KEY']
+  api_secret: ENV['CLOUD_API_SECRET']
+  enhance_image_tag: true
+  static_file_support: false
+
+production:
+  cloud_name: wyownit-dev
+  api_key:    986879516968594
+  api_secret: 2KuKVJA_PMHZRBdgVOfWxX8SolQ
+  enhance_image_tag: true
+  static_file_support: false

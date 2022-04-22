@@ -17,6 +17,9 @@ Rails.application.configure do
   # Enable server timing
   config.server_timing = true
 
+  # config/development.rb
+  config.active_storage.service = :cloudinary
+
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?
@@ -32,9 +35,6 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
-
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -53,6 +53,8 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
+
+  config.active_storage.variant_processor = :mini_magick
   # Highlight code that triggered database queries in logs.
   config.active_record.verbose_query_logs = true
 

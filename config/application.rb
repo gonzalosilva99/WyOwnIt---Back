@@ -27,7 +27,8 @@ module WyownitBack
 
     config.middleware.use Rack::MethodOverride
 
-    
+    config.active_storage.variant_processor = :mini_magick
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     Stripe.api_key = ENV['STRIPE_SECRET_KEY']
