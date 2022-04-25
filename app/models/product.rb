@@ -1,9 +1,9 @@
 class Product < ApplicationRecord
 
-  has_many_attached :images
+  enum tag: [:starter, :intermediate, :delux, :pro]
+  has_many :images
+  accepts_nested_attributes_for :images, allow_destroy: true
 
-  validates :images,
-    content_type: %i(gif png jpg jpeg),                        #Image type
-    size: { less_than_or_equal_to: 5.megabytes },              #file size
-    dimension: { width: { max: 2000 }, height: { max: 2000 } }
+
+  scope :filter_by_tag, -> (tag) { where tag: tag }
 end

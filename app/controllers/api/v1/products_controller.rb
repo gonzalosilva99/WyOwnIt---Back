@@ -1,29 +1,31 @@
 module Api
     module V1
         class ProductsController < ApplicationController
+            before_action :set_products, only: %i[index show]
 
             def index
-                @products = Product.all.with_attached_images
-
-                render json: @products.map { |product|
-                    product.images.map { |image|
-                        product.as_json.merge({ images: url_for(image) })
-                    }
-                }
+                @products = Product.all
             end
 
             def create
-                if params[:product]
-                    @product = Product.create! params.require(:product).permit(:name, :description)
-                    @product.images.attach(product_params[:images])
+                if product_params
+                    @product = Product.create(product_params)
                 end
+            end
+
+
+            def show;
+                @product = Product.find(params[:id])
             end
 
             private
             def product_params
-                params.require(:product).permit(:name, :description, :images)
+                params.require(:product).permit(:id,:name, :description, :stock, :tag, images_attributes: [:url])
             end
 
+            def set_products
+                @products = Product.all
+            end
         end
     end
 end
