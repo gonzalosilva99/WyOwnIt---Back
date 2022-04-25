@@ -8,3 +8,6 @@
 PostalCode.create(code: 'K0E 0A0', place_name: "Ontario Average")
 Admin.create!(email: 'admin@gmail.com', password:'password', password_confirmation: 'password', name:'Admin', postal_code: PostalCode.first)
 Customer.create!(email: 'customer@gmail.com', password:'password', password_confirmation: 'password', name:'Customer', postal_code: PostalCode.first)
+Admin.create(email: 'rafaschol11@gmail.com', password:'password', password_confirmation: 'password', name:'Customer', postal_code: PostalCode.first)
+Admin.create( email: 'noah.roelofsen@icloud.com',password:'password', password_confirmation: 'password', name:'Customer', postal_code: PostalCode.first)
+Admin.create(email: 'wyownit@gmail.com', password:'password', password_confirmation: 'password', name:'Customer', postal_code: PostalCode.first)
