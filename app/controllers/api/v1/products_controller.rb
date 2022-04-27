@@ -10,6 +10,10 @@ module Api
             def create
                 if product_params
                     @product = Product.create(product_params.merge(current_stock: product_params[:stock]))
+                    return render :show unless @product.invalid?
+
+                    render json: { errors: @product.errors.messages },
+                        status: :unprocessable_entity
                 end
             end
 
