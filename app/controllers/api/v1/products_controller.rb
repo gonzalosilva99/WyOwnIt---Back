@@ -4,7 +4,11 @@ module Api
             before_action :set_products, only: %i[index show]
 
             def index
-                @products = Product.all
+                if params[:search]
+                    @products = Product.where("UPPER(name) like ?", "%#{params[:search].upcase}%")
+                else
+                    @products = Product.all
+                end
             end
 
             def create
