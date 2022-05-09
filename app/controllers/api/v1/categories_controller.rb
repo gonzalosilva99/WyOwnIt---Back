@@ -29,7 +29,7 @@ module Api
 
             private
             def category_params
-                params.require(:category).permit(:id,:name)
+                params.require(:Category).permit(:id,:name)
             end
 
             def set_categories

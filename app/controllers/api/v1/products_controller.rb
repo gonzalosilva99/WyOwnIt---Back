@@ -37,7 +37,7 @@ module Api
 
             private
             def product_params
-                params.require(:product).permit(:id,:name, :description, :stock, :current_stock, :tag, :category_id, images_attributes: [:url])
+                params.require(:product).permit(:id,:name, :description, :stock, :current_stock, :tag, :category_id, images_attributes: [:url, :cloudinary_id])
             end
 
             def set_products

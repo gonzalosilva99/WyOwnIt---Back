@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       resources :products, only: [:index,:create,:show, :update]
       resources :categories, only: [:index,:create,:show, :update]
       resources :postal_codes, only: [:index, :create, :show, :update]
+      resources :suggestions, only: [:index,:create,:show]
     end
   end
 end
