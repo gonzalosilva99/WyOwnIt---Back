@@ -35,6 +35,7 @@ module Api
 
                 render json: { errors: @product.errors.messages },
                        status: :unprocessable_entity
+                       
             end
 
             private
