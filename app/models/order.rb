@@ -1,5 +1,5 @@
 class Order < ApplicationRecord
-    enum status: [:pending, :approved, :denied, :delivering, :delivered]
+    enum status: [:pending, :approved, :denied, :delivering, :delivered, :completed]
     belongs_to :user
     has_many :order_products
     has_many :products, through: :order_products
