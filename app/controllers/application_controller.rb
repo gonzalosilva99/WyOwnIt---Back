@@ -31,10 +31,14 @@ class ApplicationController < ActionController::API
     end
 
     def authenticate_user
-        authenticate_user!
+      if current_admin
+        authenticate_admin!
+      else current_customer
+        authenticate_customer!
+      end
     end
 
     def current_user
-        @current_user ||= super || User.find(@current_user_id)
+        @current_user ||= @current_admin || @current_customer
     end
 end

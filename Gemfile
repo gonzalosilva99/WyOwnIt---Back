@@ -53,6 +53,8 @@ gem 'net-http'
 gem 'rack-cors'
 
 gem "rqrcode"
+
+gem "will_paginate"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

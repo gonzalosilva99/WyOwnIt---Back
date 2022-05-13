@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_09_155218) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_13_022129) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,28 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_09_155218) do
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
+  create_table "order_products", force: :cascade do |t|
+    t.integer "units"
+    t.bigint "product_id", null: false
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_products_on_order_id"
+    t.index ["product_id"], name: "index_order_products_on_product_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "delivery_notes"
+    t.bigint "customer_id"
+    t.bigint "user_id", null: false
+    t.integer "days"
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
   create_table "postal_codes", force: :cascade do |t|
     t.string "place_name"
     t.string "code"
@@ -122,6 +144,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_09_155218) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "images", "products"
+  add_foreign_key "order_products", "orders"
+  add_foreign_key "order_products", "products"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "users"
   add_foreign_key "products", "categories"
   add_foreign_key "users", "postal_codes"
 end

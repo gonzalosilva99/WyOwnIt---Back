@@ -9,6 +9,7 @@ class User < ApplicationRecord
          validates :email, :type, presence: true
          belongs_to :postal_code
          
+  has_many :orders
   def jwt_payload
     { user_type: type }
   end

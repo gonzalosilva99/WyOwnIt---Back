@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers'
       get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code'
       resources :products, only: [:index,:create,:show, :update]
+      resources :orders, only: [:index,:create,:show, :update]
       resources :categories, only: [:index,:create,:show, :update]
       resources :postal_codes, only: [:index, :create, :show, :update]
       resources :suggestions, only: [:index,:create,:show]
