@@ -28,7 +28,7 @@ module Api
 
             def update
                 @product = Product.find params[:id]
-                @product.images.delete_all
+                @product.images.destroy_all
                 @product.save
                 @product.update product_params
                 return render :show unless @product.invalid?
