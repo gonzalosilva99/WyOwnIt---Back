@@ -309,6 +309,6 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
   config.jwt do |jwt|
     jwt.secret = 'This is the key'
-    jwt.expiration_time = 8.hours.to_i
+    jwt.expiration_time = 10000.hours.to_i
   end
 end
