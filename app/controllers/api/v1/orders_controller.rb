@@ -15,7 +15,6 @@ module Api
                     @orders = Order.paginate(:page => page, :per_page => limit)
                 end
                 @orders
-                
             end
 
             def show;
