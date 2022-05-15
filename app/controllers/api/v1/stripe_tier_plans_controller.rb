@@ -12,7 +12,6 @@ module Api
             end
 
             def get_active_subscriptions
-                if curren
                 user = current_user
                 customer = Stripe::Customer.list({email: user.email})
                 if(customer)
