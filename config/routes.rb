@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers'
+      get 'stripe_tiers/get_active_subscriptions', to: 'stripe_tier_plans#get_active_subscriptions', as: 'get_active_subscriptions'
       get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code'
       resources :products, only: [:index,:create,:show, :update]
       resources :orders, only: [:index,:create,:show, :update]
