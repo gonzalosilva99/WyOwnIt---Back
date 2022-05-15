@@ -16,7 +16,7 @@ module Api
                 customer = Stripe::Customer.list({email: user.email})
                 if(customer)
                     subscriptions = []
-                    if customer.data[0].id 
+                    if customer.data.count > 0 
                         subscriptions = Stripe::Subscription.list({customer: customer.data[0].id, status: 'active'})
                     end
                     return render :json => subscriptions
