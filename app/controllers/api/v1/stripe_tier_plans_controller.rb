@@ -1,7 +1,7 @@
 module Api
     module V1
         class StripeTierPlansController < ApplicationController
-            before_action :authenticate_user, only: %i[get_active_subscription]
+            before_action :authenticate_user, only: %i[get_active_subscriptions]
             
             def get_tiers
                 products = Stripe::Price.list({
@@ -12,6 +12,7 @@ module Api
             end
 
             def get_active_subscriptions
+                if curren
                 user = current_user
                 customer = Stripe::Customer.list({email: user.email})
                 if(customer)
