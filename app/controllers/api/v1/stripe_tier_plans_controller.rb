@@ -1,7 +1,7 @@
 module Api
     module V1
         class StripeTierPlansController < ApplicationController
-            before_action :authenticate_user
+            before_action :authenticate_user, only: %i[get_active_subscription]
             
             def get_tiers
                 products = Stripe::Price.list({
