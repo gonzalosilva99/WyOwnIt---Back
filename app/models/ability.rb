@@ -3,7 +3,6 @@ class Ability
   
     def initialize(user)
       can [:my_user], User
-      can [:validate_postal_code], StripeTierPlan
       if user.admin? #  abilities of main store
         can [:index, :show, :update], Order
         can [:get_active_subscription], StripeTierPlan
