@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
 
-  enum tag: [:starter, :intermediate, :delux, :pro]
+  enum tag: [:starter, :intermediate, :deluxe, :pro]
   validates :stock, :current_stock, :name, presence: true
   has_many :images
   belongs_to :category
