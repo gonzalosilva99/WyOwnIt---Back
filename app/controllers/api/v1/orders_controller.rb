@@ -8,11 +8,22 @@ module Api
             def index
                 page = params[:page] ? params[:page] : 1
                 limit = params[:limit] ? params[:limit] : 10
+                sort_by = 'id'
+                sort_by = params[:sort_by] if params[:sort_by]
+                order = 'asc'
+                order = params[:order_type] if params[:order_type]
                 @orders = {}
+
                 if @current_customer 
-                    @orders = @current_customer.orders.paginate(:page => page, :per_page => limit)
+                    @orders = @current_customer.orders.paginate(:page => page, :per_page => limit).order(sort_by + ' ' + order.upcase)
                 elsif @current_admin   
-                    @orders = Order.paginate(:page => page, :per_page => limit)
+                    @orders = Order.paginate(:page => page, :per_page => limit).order(sort_by + ' ' + order.upcase)
+                end
+                if params[:search]
+                    @orders = @orders.where("CAST(id AS TEXT) like ?", "%#{params[:search]}%").order(sort_by + ' ' + order.upcase)
+                end
+                if params[:status]
+                    @orders = @orders.where(status: params[:status])
                 end
                 @orders
             end
@@ -38,7 +49,7 @@ module Api
             private
             def order_params
                 params.require(:order)
-                      .permit(:id, :date, :created_at, :status, :days,
+                      .permit(:id, :date, :created_at, :status, :start_date, :end_date, :search, :sort_by, :order,
                               order_products_attributes: [:product_id, :units ]
                     )
             end

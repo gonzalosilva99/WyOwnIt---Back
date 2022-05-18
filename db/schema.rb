@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_13_022129) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_18_015231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,7 +90,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_13_022129) do
     t.string "delivery_notes"
     t.bigint "customer_id"
     t.bigint "user_id", null: false
-    t.integer "days"
+    t.datetime "start_date"
+    t.datetime "end_date"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
