@@ -49,8 +49,8 @@ module Api
             private
             def order_params
                 params.require(:order)
-                      .permit(:id, :date, :created_at, :status, :start_date, :end_date, :search, :sort_by, :order, 
-                              :delivery_notes, :order_products_attributes: [:product_id, :units ]
+                      .permit(:id, :date, :created_at, :status, :start_date, :end_date, :search, :sort_by, :order, :delivery_notes,
+                              order_products_attributes: [:product_id, :units ]
                     )
             end
             
