@@ -31,6 +31,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'stripe_tiers/get_tiers', to: 'stripe_tier_plans#get_tiers', as: 'get_tiers'
       get 'stripe_tiers/get_active_subscriptions', to: 'stripe_tier_plans#get_active_subscriptions', as: 'get_active_subscriptions'
+      get 'stripe_tiers/upgrade_subscription', to: 'stripe_tier_plans#upgrade_subscription', as: 'upgrade_subscription'
+      get 'stripe_tiers/cancel_subscription', to: 'stripe_tier_plans#cancel_subscription', as: 'cancel_subscription'
       get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code'
       resources :products, only: [:index,:create,:show, :update]
       resources :orders, only: [:index,:create,:show, :update]
