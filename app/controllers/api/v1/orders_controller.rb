@@ -34,12 +34,14 @@ module Api
 
             def create
                 @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
+                Notification.create(message: 'Your new order has been created, check "My orders" to see it.', user: @order.user, seen: false)
                 @order.save
             end
 
             def update 
                 @order = Order.find params[:id]
                 @order.update order_params
+                Notification.create(message: 'The order of ' + @order.created_at.strftime("%Y-%m-%d") + ' has been updated.', user: @order.user, seen: false)
                 return render :show unless @order.invalid?
 
                 render json: { errors: @order.errors.messages },

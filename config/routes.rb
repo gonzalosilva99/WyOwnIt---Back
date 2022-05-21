@@ -39,6 +39,7 @@ Rails.application.routes.draw do
       resources :categories, only: [:index,:create,:show, :update]
       resources :postal_codes, only: [:index, :create, :show, :update]
       resources :suggestions, only: [:index,:create,:show]
+      resources :notifications, only: [:index,:show, :update]
     end
   end
 end

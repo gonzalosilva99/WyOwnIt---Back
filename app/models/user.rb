@@ -10,6 +10,7 @@ class User < ApplicationRecord
          belongs_to :postal_code
          
   has_many :orders
+  has_many :notifications
   def jwt_payload
     { user_type: type }
   end
