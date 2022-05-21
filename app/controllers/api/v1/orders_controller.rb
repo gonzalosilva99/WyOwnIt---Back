@@ -36,7 +36,7 @@ module Api
                 @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
                 message = 'Your new order has been created, check "My orders" to see it.'
                 Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
-                NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_later
+                NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_now
                 @order.save
             end
 
