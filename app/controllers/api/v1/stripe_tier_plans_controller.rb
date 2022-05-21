@@ -23,7 +23,7 @@ module Api
                 end
             end 
 
-            def upgrade_subscription
+            def update_subscription
                 new_price = params[:new_price]
                 if(!new_price)
                     render json: { error: "Error, new price needed" }
