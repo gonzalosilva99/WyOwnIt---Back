@@ -39,7 +39,8 @@ Rails.application.routes.draw do
       resources :categories, only: [:index,:create,:show, :update]
       resources :postal_codes, only: [:index, :create, :show, :update]
       resources :suggestions, only: [:index,:create,:show]
-      resources :notifications, only: [:index,:show, :update]
+      get 'notifications/has_unseen_notifications', to: 'notifications#has_unseen_notifications', as: 'has_unseen_notifications'
+      resources :notifications, only: [:index,:show, :update, :has_unseen_notifications]
     end
   end
 end

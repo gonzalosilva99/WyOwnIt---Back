@@ -28,6 +28,13 @@ module Api
                        status: :unprocessable_entity
             end
 
+
+            def has_unseen_notifications 
+                user = current_user
+                has_unseen = user.notifications.where(seen: [false, nil]).count > 0 
+                return render json: { result: has_unseen.to_s }
+            end 
+
             private
             def notification_params
                 params.require(:notification)
