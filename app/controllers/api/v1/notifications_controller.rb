@@ -32,7 +32,7 @@ module Api
             def has_unseen_notifications 
                 user = current_user
                 has_unseen = user.notifications.where(seen: [false, nil]).count > 0 
-                return render json: { result: has_unseen.to_s }
+                return render json: { result: has_unseen }
             end 
 
             private
