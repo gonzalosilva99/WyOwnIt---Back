@@ -6,6 +6,6 @@ class NotificationMailer < ApplicationMailer
       if(!@message || !@addressee )
         throw "Error, addressee and message needed"
       end
-      mail(to: @message, subject: @addressee)
+      mail(to: @addressee, subject: 'New notification - WyOwnIt')
     end
 end
