@@ -35,7 +35,7 @@ module Api
             def create
                 @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
                 message = 'Your new order has been created, check "My orders" to see it.'
-                Notification.create(message: message, user: @order.user, seen: false)
+                Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
                 NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_later
                 @order.save
             end
@@ -43,7 +43,7 @@ module Api
             def update 
                 @order = Order.find params[:id]
                 @order.update order_params
-                Notification.create(message: 'The order of ' + @order.created_at.strftime("%Y-%m-%d") + ' has been updated.', user: @order.user, seen: false)
+                Notification.create(title: 'Order updated',message: 'The order of ' + @order.created_at.strftime("%Y-%m-%d") + ' has been updated.', user: @order.user, seen: false)
                 return render :show unless @order.invalid?
 
                 render json: { errors: @order.errors.messages },
