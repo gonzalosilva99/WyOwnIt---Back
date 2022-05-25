@@ -33,11 +33,22 @@ module Api
             end
 
             def create
-                @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
-                message = 'Your new order has been created, check "My orders" to see it.'
-                Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
-                NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_now
-                @order.save
+                begin 
+                    if is_order_valid
+                        @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
+                        message = 'Your new order has been created, check "My orders" to see it.'
+                        Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
+                        NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_now
+                        @order.save
+                    else 
+                        return render json: { result: false }
+                    end
+                    
+                rescue StandardError => e
+                    reason = e.message
+                    return render json: {result: false, reason: reason}
+                end 
+                
             end
 
             def update 
@@ -78,7 +89,61 @@ module Api
                 
             end
 
+            def validate_order 
+                begin
+                    if is_order_valid
+                        return render json: { result: true }
+                    else 
+                        return render json: { result: false }
+                    end
+                rescue StandardError => e
+                    reason = e.message
+                    return render json: {result: false, reason: reason}
+                end    
+            end 
+
             private
+
+
+            def is_order_valid 
+                user = @current_user
+                order = Order.new(order_params.merge(user: @current_user, status: "pending"))
+                if(order.valid?)
+                    #get subscription of the user 
+                    customer = Stripe::Customer.list({email: user.email})
+                    if(customer)
+                        subscriptions = []
+                        if customer.data.count > 0 
+                            subscriptions = Stripe::Subscription.list({customer: customer.data[0].id, status: 'active'})
+                        end
+                        if subscriptions 
+                            subscription = subscriptions.data[0]
+                            if !subscription
+                                raise StandardError.new "You don't have any subscription."
+                            end 
+                            max_orders_allowed = subscription.items.data[0].plan.metadata.max_orders_per_month.to_i
+                            max_days_allowed = subscription.items.data[0].plan.metadata.max_days_per_order.to_i
+                            
+                            starter_date = Time.at(subscription.current_period_start).to_datetime
+                            order_of_this_period = user.orders.where("created_at > ?", starter_date).count 
+                            days_ordered = order.end_date.day - order.start_date.day
+
+                            if(order_of_this_period < max_orders_allowed && days_ordered <= max_days_allowed)
+                                return true
+                            else 
+                                raise StandardError.new "Number of orders exceeded for this Tier or max days per order exceeded."
+                            end
+                        else
+                            raise StandardError.new "You don't have any active subscription"
+                        end 
+                    else
+                        raise StandardError.new "Error with the logged user"
+                    end 
+                else
+                    raise StandardError.new "Order not valid."
+                end 
+                return false 
+            end
 
             def get_users_per_product(products, subscriptions)
                subscriptions.each do |subscription| 

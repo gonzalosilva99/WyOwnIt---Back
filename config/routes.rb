@@ -35,6 +35,7 @@ Rails.application.routes.draw do
       get 'stripe_tiers/cancel_subscription', to: 'stripe_tier_plans#cancel_subscription', as: 'cancel_subscription'
       get 'postal_codes/validate', to: 'postal_codes#validate_postal_code', as: 'validate_postal_code'
       get 'stats', to: 'orders#stats', as: 'stats'
+      post 'orders/validate_order', to: 'orders#validate_order', as: 'validate_order'
       resources :products, only: [:index,:create,:show, :update]
       resources :orders, only: [:index,:create,:show, :update]
       resources :categories, only: [:index,:create,:show, :update]

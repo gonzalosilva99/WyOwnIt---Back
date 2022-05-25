@@ -10,7 +10,7 @@ class Ability
         # can [:create, :index, :show, :update, :swap_products_order], Product 
         # can [:create, :index, :show, :products, :update,:swap_categories_order], Category 
       elsif user.customer?
-        can [:create, :index, :show ], Order
+        can [:create, :index, :show, :validate_order ], Order
         # can [:index, :show], ShipmentProduct
         # can [:index, :show, :swap_products_order], Product
         # can [:create, :index, :show, :products, :swap_categories_order], Category 
