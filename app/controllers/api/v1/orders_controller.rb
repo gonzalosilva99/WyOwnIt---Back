@@ -50,7 +50,51 @@ module Api
                        status: :unprocessable_entity
             end 
 
+            def stats 
+                products = Stripe::Product.list({limit: 20}).data
+                subscriptions = Stripe::Subscription.list({status: 'active'})
+                
+                #get # of pending orders 
+                @current_orders = Order.where.not(status: 'approved', status: 'denied').count
+
+                #get # of subscriptions
+                @users_per_product = {}
+                get_users_per_product(products, subscriptions) 
+
+                #get new subscriptors and orders 
+                @new_subscriptors = Customer.where("created_at > ?", 30.days.ago).count
+                @new_orders = Order.where("created_at > ?", 30.days.ago).count
+
+                #Most demanded product
+                hash = OrderProduct.where('created_at > ?', 30.days.ago).group(:product_id).sum(:units)
+                most_demanded = hash.sort_by {|_key, value| value}.last
+                @product_most_demanded = ""
+                if most_demanded
+                    @product_most_demanded = Product.find(most_demanded[0]).name 
+                end
+
+                @orders_per_postal_code = Order.joins(user: :postal_code).group('postal_codes.code').count.sort_by {|_key, value| value}.to_h
+                
+                
+            end
+
             private
+
+            def get_users_per_product(products, subscriptions)
+               subscriptions.each do |subscription| 
+                    #get # of subscription 
+                    prod_id = subscription.items.data[0].plan.product
+                    product_name = products.find { |prod| prod.id == prod_id }.name
+                    if(@users_per_product[product_name])
+                        @users_per_product[product_name] += 1 
+                    else 
+                        @users_per_product[product_name] = 1 
+                    end
+                end
+            end
+
+
+
             def order_params
                 params.require(:order)
                       .permit(:id, :date, :created_at, :status, :start_date, :end_date, :search, :sort_by, :order, :delivery_notes,

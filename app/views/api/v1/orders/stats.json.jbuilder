@@ -1,0 +1,6 @@
+json.current_orders @current_orders
+json.users_per_product @users_per_product
+json.new_subscriptors @new_subscriptors
+json.new_orders @new_orders
+json.product_most_demanded @product_most_demanded
+json.orders_per_postal_code @orders_per_postal_code
