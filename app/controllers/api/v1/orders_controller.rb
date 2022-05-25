@@ -68,9 +68,9 @@ module Api
                 #Most demanded product
                 hash = OrderProduct.where('created_at > ?', 30.days.ago).group(:product_id).sum(:units)
                 most_demanded = hash.sort_by {|_key, value| value}.last
-                @product_most_demanded = ""
+                @most_demanded_product = ""
                 if most_demanded
-                    @product_most_demanded = Product.find(most_demanded[0]).name 
+                    @most_demanded_product = Product.find(most_demanded[0]).name 
                 end
 
                 @orders_per_postal_code = Order.joins(user: :postal_code).group('postal_codes.code').count.sort_by {|_key, value| value}.to_h

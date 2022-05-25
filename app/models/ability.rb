@@ -4,13 +4,13 @@ class Ability
     def initialize(user)
       can [:my_user], User
       if user.admin? #  abilities of main store
-        can [:index, :show, :update], Order
+        can [:index, :show, :update, :stats], Order
         # can [:index, :show, :stats_by_month, :update], Shipment
         # can [:create, :index, :show, :update], ShipmentProduct
         # can [:create, :index, :show, :update, :swap_products_order], Product 
         # can [:create, :index, :show, :products, :update,:swap_categories_order], Category 
       elsif user.customer?
-        can [:create, :index, :show, :stats ], Order
+        can [:create, :index, :show ], Order
         # can [:index, :show], ShipmentProduct
         # can [:index, :show, :swap_products_order], Product
         # can [:create, :index, :show, :products, :swap_categories_order], Category 
