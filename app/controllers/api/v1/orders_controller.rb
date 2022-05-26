@@ -121,15 +121,24 @@ module Api
                             end 
                             max_orders_allowed = subscription.items.data[0].plan.metadata.max_orders_per_month.to_i
                             max_days_allowed = subscription.items.data[0].plan.metadata.max_days_per_order.to_i
+                            max_products_per_order = subscription.items.data[0].plan.metadata.max_products_per_order.to_i
                             
                             starter_date = Time.at(subscription.current_period_start).to_datetime
                             order_of_this_period = user.orders.where("created_at > ?", starter_date).count 
                             days_ordered = order.end_date.day - order.start_date.day
-
-                            if(order_of_this_period < max_orders_allowed && days_ordered <= max_days_allowed)
-                                return true
+                            products = 0
+                            order.order_products.each do |ord_prod|
+                                products += ord_prod.units
+                            end
+                            binding.pry
+                            if(order_of_this_period >= max_orders_allowed )
+                                raise StandardError.new "Number of orders exceeded for this Tier this period."
+                            elsif(days_ordered > max_days_allowed)
+                                raise StandardError.new "Days of order exceeded for this Tier"
+                            elsif(products_of_order > max_products_per_order)
+                                raise StandardError.new "Products per order exceeded for this Tier"
                             else 
-                                raise StandardError.new "Number of orders exceeded for this Tier or max days per order exceeded."
+                                return true
                             end
                         else
                             raise StandardError.new "You don't have any active subscription"
