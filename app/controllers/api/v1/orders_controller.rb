@@ -85,8 +85,6 @@ module Api
                 end
 
                 @orders_per_postal_code = Order.joins(user: :postal_code).group('postal_codes.code').count.sort_by {|_key, value| value}.to_h
-                
-                
             end
 
             def validate_order 
