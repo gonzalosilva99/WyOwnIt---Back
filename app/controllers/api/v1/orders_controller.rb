@@ -126,11 +126,10 @@ module Api
                             starter_date = Time.at(subscription.current_period_start).to_datetime
                             order_of_this_period = user.orders.where("created_at > ?", starter_date).count 
                             days_ordered = order.end_date.day - order.start_date.day
-                            products = 0
+                            products_of_order = 0
                             order.order_products.each do |ord_prod|
-                                products += ord_prod.units
+                                products_of_order += ord_prod.units
                             end
-                            binding.pry
                             if(order_of_this_period >= max_orders_allowed )
                                 raise StandardError.new "Number of orders exceeded for this Tier this period."
                             elsif(days_ordered > max_days_allowed)
