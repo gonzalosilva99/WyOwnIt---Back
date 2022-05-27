@@ -122,15 +122,21 @@ module Api
                             max_orders_allowed = subscription.items.data[0].plan.metadata.max_orders_per_month.to_i
                             max_days_allowed = subscription.items.data[0].plan.metadata.max_days_per_order.to_i
                             max_products_per_order = subscription.items.data[0].plan.metadata.max_products_per_order.to_i
+                            subscription_tag = subscription.items.data[0].plan.metadata.tag
                             
                             starter_date = Time.at(subscription.current_period_start).to_datetime
                             order_of_this_period = user.orders.where("created_at > ?", starter_date).count 
-                            days_ordered = order.end_date.day - order.start_date.day
+                            end_date = order.end_date.to_date
+                            start_date = order.start_date.to_date
+                            days_ordered = (end_date - start_date).to_i
                             products_of_order = 0
                             order.order_products.each do |ord_prod|
                                 products_of_order += ord_prod.units
                             end
-                            if(order_of_this_period >= max_orders_allowed )
+                            
+                            if(!validate_products_tag(order, subscription_tag))
+                                raise StandardError.new "One of the products tag is not allowed for your subscription."
+                            elsif(order_of_this_period >= max_orders_allowed )
                                 raise StandardError.new "Number of orders exceeded for this Tier this period."
                             elsif(days_ordered > max_days_allowed)
                                 raise StandardError.new "Days of order exceeded for this Tier"
@@ -149,6 +155,30 @@ module Api
                     raise StandardError.new "Order not valid."
                 end 
                 return false 
+            end
+
+            def validate_products_tag(order, tag)
+                valid_tags = []
+                valid = true  
+                case tag 
+                when 'pro'
+                    valid_tags.push('starter','intermediate','deluxe','pro')
+                when 'deluxe'
+                    valid_tags.push('starter','intermediate','deluxe')
+                when 'intermediate'
+                    valid_tags.push('starter','intermediate')
+                when 'starter'
+                    valid_tags.push('starter')
+                else 
+                end
+
+                order.order_products.each do |ord_prod|
+                    product = Product.find(ord_prod.product_id)
+                    binding.pry
+                    tag = product.tag 
+                    valid = false if(!valid_tags.include? tag)
+                end
+                return valid 
             end
 
             def get_users_per_product(products, subscriptions)
