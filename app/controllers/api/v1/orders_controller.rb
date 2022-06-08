@@ -132,6 +132,10 @@ module Api
                             products_of_order = 0
                             order.order_products.each do |ord_prod|
                                 products_of_order += ord_prod.units
+                                if(!check_product_stock(ord_prod, start_date, end_date))
+                                    product = Product.find(ord_prod.product_id)
+                                    raise StandardError.new "Sorry, we don't have stock for " + product.name + " those days."
+                                end
                             end
                             
                             if(!validate_products_tag(order, subscription_tag))
@@ -157,6 +161,25 @@ module Api
                 return false 
             end
 
+            def check_product_stock(order_product, start_date, end_date)
+                if(order_product)
+                    product = Product.find(order_product.product_id)
+                    total_stock = product.stock
+                    collision_orders = OrderProduct.where(product_id: product.id).joins(:order).where("(end_date >= ? OR start_date >= ?)",start_date - 2.days, end_date + 2.days)
+                    if collision_orders 
+                        consumed_stock = 0
+                        collision_orders.each do |ord_prod|
+                            consumed_stock += ord_prod.units
+                        end  
+                        binding.pry
+                        if consumed_stock >= total_stock + order_product.units 
+                            return false 
+                        end 
+                    end
+                end
+                true
+            end
+
             def validate_products_tag(order, tag)
                 valid_tags = []
                 valid = true  
@@ -174,7 +197,6 @@ module Api
 
                 order.order_products.each do |ord_prod|
                     product = Product.find(ord_prod.product_id)
-                    binding.pry
                     tag = product.tag 
                     valid = false if(!valid_tags.include? tag)
                 end
