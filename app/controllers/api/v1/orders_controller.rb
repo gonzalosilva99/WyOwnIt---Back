@@ -38,10 +38,11 @@ module Api
                         @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
                         message = 'Your new order has been created, check "My orders" to see it.'
                         Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
+                        binding.pry
                         NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_now
                         admins = Admin.all
                         admins.each do |admin| 
-                            NotificationMailer.with(message: "A new order was created, please check it.", addressee: @admin.email).new_notification_email.deliver_now
+                            NotificationMailer.with(message: "A new order was created, please check it.", addressee: admin.email).new_notification_email.deliver_now
                         end
                         @order.save
                     else 
@@ -175,7 +176,6 @@ module Api
                         collision_orders.each do |ord_prod|
                             consumed_stock += ord_prod.units
                         end  
-                        binding.pry
                         if consumed_stock >= total_stock + order_product.units 
                             return false 
                         end 
