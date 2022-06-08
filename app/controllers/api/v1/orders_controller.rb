@@ -38,7 +38,6 @@ module Api
                         @order = Order.create!(order_params.merge(user: @current_user, status: "pending"))
                         message = 'Your new order has been created, check "My orders" to see it.'
                         Notification.create(title: 'Order created', message: message, user: @order.user, seen: false)
-                        binding.pry
                         NotificationMailer.with(message: message, addressee: @current_user.email).new_notification_email.deliver_now
                         admins = Admin.all
                         admins.each do |admin| 
