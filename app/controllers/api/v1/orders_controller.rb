@@ -143,13 +143,13 @@ module Api
                             end
                             
                             if(!validate_products_tag(order, subscription_tag))
-                                raise StandardError.new "One of the products tag is not allowed for your subscription."
+                                raise StandardError.new "One of the selected products is not allowed for your subscription."
                             elsif(order_of_this_period >= max_orders_allowed )
-                                raise StandardError.new "Number of orders exceeded for this Tier this period."
+                                raise StandardError.new "Sorry, you have exceeded your monthly order limit, please upgrade to continue."
                             elsif(days_ordered > max_days_allowed)
-                                raise StandardError.new "Days of order exceeded for this Tier"
+                                raise StandardError.new "Sorry, you have exceeded your rental day booking limit. Please reduce to continue."
                             elsif(products_of_order > max_products_per_order)
-                                raise StandardError.new "Products per order exceeded for this Tier"
+                                raise StandardError.new "Sorry, you have exceeded your products per order limit. Please reduce your cart to continue."
                             else 
                                 return true
                             end
