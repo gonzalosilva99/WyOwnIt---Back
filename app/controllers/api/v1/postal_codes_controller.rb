@@ -8,7 +8,9 @@ module Api
 
             def create
                 if postal_code_params
-                    @postal_code = PostalCode.create(postal_code_params)
+                    post_code = postal_code_params 
+                    post_code["code"] = post_code["code"].upcase
+                    @postal_code = PostalCode.create(post_code.merge(place_name: "Not used"))
                     return render :show unless @postal_code.invalid?
 
                     render json: { errors: @postal_code.errors.messages },
